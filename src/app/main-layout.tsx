@@ -21,6 +21,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 const drawerWidth = 240;
 import { MuiTheme } from '../lib/mui/theme';
 import { ThemeProvider } from '@mui/material/styles';
+import { useRouter } from 'next/navigation'
+
 
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -30,7 +32,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [showMenu, setShowMenu] = useState<string[]>([])
+  const [showMenu, setShowMenu] = useState<string[]>([]);
+  const router = useRouter()
+
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -66,7 +70,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <List>
         {showMenu.map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => router.push(text.toLowerCase())}>
               <ListItemIcon style={{ minWidth: 30, marginRight: 4 }}>
                 {text === 'Home' ? <Home /> : null}
                 {text === 'History' ? <History /> : null}

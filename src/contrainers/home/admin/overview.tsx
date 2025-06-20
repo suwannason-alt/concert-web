@@ -11,7 +11,7 @@ export default function Overview() {
     const [data, setData] = useState<string[]>([])
 
     useEffect(() => {
-        setData(['1', '2'])
+        setData(['1', '2', '3'])
     }, [])
     const confirmDeleteAction = (isConfirm: boolean) => {
         console.log({ isConfirm });
@@ -33,7 +33,7 @@ export default function Overview() {
                                     <Grid container>
                                         <Grid size={{ lg: 12, xl: 12, md: 12, sm: 12, xs: 12 }} textAlign={'left'}>
                                             <div className='text-[32px] font-bold text-[#1692EC]'>
-                                                Concert Name 1
+                                                Concert Name {item}
                                             </div>
                                         </Grid>
                                     </Grid>
