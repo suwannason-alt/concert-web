@@ -19,13 +19,16 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const drawerWidth = 240;
+import { MuiTheme } from '../lib/mui/theme';
+import { ThemeProvider } from '@mui/material/styles';
 
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+    const theme = useTheme();
 
-  const theme = useTheme();
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showMenu, setShowMenu] = useState<string[]>([])
 
@@ -146,9 +149,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar style={{ minHeight: 0 }} />
-        <div>
-          {children}
-        </div>
+        <ThemeProvider theme={MuiTheme}>
+          <div>
+            {children}
+          </div>
+        </ThemeProvider>
       </Box>
     </Box>
   );
