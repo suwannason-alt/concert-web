@@ -148,7 +148,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
-        <Toolbar style={{ minHeight: 0 }} />
+        <Toolbar style={{ minHeight: 15 }} />
         <ThemeProvider theme={MuiTheme}>
           <div>
             {children}
