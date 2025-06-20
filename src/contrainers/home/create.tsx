@@ -7,9 +7,9 @@ import {
     TextField
 } from '@mui/material';
 import { useState } from 'react';
-import { create } from '../../../services/consert.service'
-import SnackAlert from '../../../components/snack-bar';
-import { ESeverity } from '../../../enum';
+import { create } from '../../services/consert.service'
+import SnackAlert from '../../components/snack-bar';
+import { ESeverity } from '../../enum';
 
 export default function CreateConcert() {
     const [name, setName] = useState<string>('')

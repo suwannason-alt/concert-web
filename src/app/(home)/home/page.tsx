@@ -1,6 +1,6 @@
-import RootHome from '../../../contrainers/home/admin';
 import MainLayout from '../../main-layout';
-
+import RootHome
+ from '../../../contrainers/home';
 export default function Home() {
     return (
         <MainLayout>

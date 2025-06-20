@@ -2,7 +2,7 @@
 
 import { Delete, Person2Outlined } from '@mui/icons-material';
 import { Grid, Card, CardContent, Divider, Button } from '@mui/material';
-import ConfirmDelete from '../../../components/confirm-delete';
+import ConfirmDelete from '../../components/confirm-delete';
 import { useEffect, useState } from 'react';
 
 export default function Overview() {

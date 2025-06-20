@@ -28,7 +28,8 @@ import { useRouter } from 'next/navigation'
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-    const theme = useTheme();
+  const theme = useTheme();
+  const [currentRole, setCurrentRole] = useState<string>('Admin')
 
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -50,11 +51,20 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       setMobileOpen(!mobileOpen);
     }
   };
+  const switchRole = () => {
+    let role;
+    if (currentRole === 'Admin') {
+      role = 'User'
+    } else {
+      role = 'Admin'
+    }
+    setCurrentRole(role)
+  }
+
   useEffect(() => {
     setShowMenu([
       'Home',
       'History',
-      'Switch to'
     ])
   }, [])
 
@@ -62,7 +72,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <div style={{ height: '100%' }}>
       <Toolbar>
         <div className='center-container text-2xl'>
-          User
+          {currentRole}
         </div>
 
       </Toolbar>
@@ -70,16 +80,23 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <List>
         {showMenu.map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => router.push(text.toLowerCase())}>
+            <ListItemButton onClick={() => router.push(text.replace(' ', '').toLowerCase())}>
               <ListItemIcon style={{ minWidth: 30, marginRight: 4 }}>
                 {text === 'Home' ? <Home /> : null}
                 {text === 'History' ? <History /> : null}
-                {text === 'Switch to' ? <SwapHoriz /> : null}
               </ListItemIcon>
               <ListItemText primary={<span className='text-lg'>{text}</span>} />
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem disablePadding>
+          <ListItemButton onClick={switchRole}>
+            <ListItemIcon style={{ minWidth: 30, marginRight: 4 }}>
+              <SwapHoriz />
+            </ListItemIcon>
+            <ListItemText primary={<span className='text-lg'>{`Switch to ${(currentRole === 'Admin') ? 'User' : 'Admin'}`}</span>} />
+          </ListItemButton>
+        </ListItem>
       </List>
       <div className="absolute bottom-15 left-0 w-full">
         <ListItem disablePadding>
