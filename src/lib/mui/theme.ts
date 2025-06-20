@@ -7,7 +7,10 @@ export const MuiTheme = createTheme(
                 main: '#0070A4'
             },
             error: {
-                main: '#F96464'
+                main: '#E63946'
+            },
+            warning: {
+              main: '#F96464'
             },
         },
         components: {
