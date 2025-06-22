@@ -18,7 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 import { MuiTheme } from '../lib/mui/theme';
 import { ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';

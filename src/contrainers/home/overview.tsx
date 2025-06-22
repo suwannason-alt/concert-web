@@ -7,7 +7,7 @@ import ConfirmDelete from '../../components/confirm-delete';
 import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../lib/redux/store';
-import { getConsert, reserveConsert, getHistory } from '../../services/consert.service'
+import { getConsert, reserveConsert, getHistory, deleteConcert, cancelConsert } from '../../services/consert.service'
 
 export default function Overview() {
     const [open, setOpen] = useState<boolean>(false);
@@ -41,7 +41,6 @@ export default function Overview() {
 
     const renderUserButton = (concert_uuid: string) => {
         const consert_his = history.find(item => item.concert_uuid === concert_uuid);
-        console.log({ consert_his });
         if (consert_his) {
             if (consert_his.action === 'Reserve') {
                 return (
@@ -63,9 +62,15 @@ export default function Overview() {
             >Reserve</Button>
         )
     }
-    const confirmDeleteAction = (isConfirm: boolean) => {
-        console.log({ isConfirm, delete: uuid });
+    const confirmDeleteAction = async (isConfirm: boolean) => {
         setOpen(false)
+        if (isConfirm === true) {
+            await deleteConcert(uuid)
+            await Promise.all([
+                listConsert(),
+                listHistory(),
+            ])
+        }
     }
     const handleDelete = (name: string, remove_uuid: string) => {
         setDeleteName(name)
@@ -74,12 +79,19 @@ export default function Overview() {
     }
 
     const handleReserve = async (uuid: string) => {
-        console.log('handleReserve: ', uuid);
         await reserveConsert(uuid)
+        await Promise.all([
+            listConsert(),
+            listHistory(),
+        ])
     }
 
-    const handleCancel = (uuid: string) => {
-        console.log('handleCancel: ', uuid);
+    const handleCancel = async (uuid: string) => {
+        await cancelConsert(uuid)
+                await Promise.all([
+            listConsert(),
+            listHistory(),
+        ])
     }
     return (
         <>
