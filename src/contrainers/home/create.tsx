@@ -11,7 +11,10 @@ import { create } from '../../services/consert.service'
 import SnackAlert from '../../components/snack-bar';
 import { ESeverity } from '../../enum';
 
-export default function CreateConcert() {
+interface IProps {
+    handleChange: (event: React.SyntheticEvent, newValue: string) => void
+}
+export default function CreateConcert(props: IProps) {
     const [name, setName] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [seat, setSeat] = useState<number>(0);
@@ -20,10 +23,13 @@ export default function CreateConcert() {
     const [message, setMessage] = useState('')
 
     const handleSubmit = async () => {
-        console.log({ name, description, seat });
         try {
             await create(name, description, seat);
-
+            setMessage(`create consert successfully.`);
+            setOpenAlert(true);
+            setTimeout(() => {
+                props.handleChange({} as React.SyntheticEvent, '1')
+            }, 3000);
         } catch (error: unknown) {
             setSeverity(ESeverity.error)
             if (error instanceof Error) {

@@ -4,21 +4,21 @@
 import { Delete, Person2Outlined } from '@mui/icons-material';
 import { Grid, Card, CardContent, Divider, Button } from '@mui/material';
 import ConfirmDelete from '../../components/confirm-delete';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../lib/redux/store';
-import { getConsert, reserveConsert } from '../../services/consert.service'
+import { getConsert, reserveConsert, getHistory } from '../../services/consert.service'
 
 export default function Overview() {
     const [open, setOpen] = useState<boolean>(false);
     const [deleteName, setDeleteName] = useState<string>('');
-    const [data, setData] = useState<string[]>([]);
+    const [data, setData] = useState<any[]>([]);
+    const [history, setHistory] = useState<any[]>([])
     const [uuid, setUuid] = useState('')
 
     const role = useSelector((state: RootState) => state.user.role)
 
     useEffect(() => {
-        // setData(['1', '2', '3'])
         listConsert();
     }, [])
 
@@ -27,10 +27,42 @@ export default function Overview() {
         setData(response.data)
     }
 
+    async function listHistory() {
+        const respopnse = await getHistory()
+        setHistory(respopnse.data)
+    }
+
     useEffect(() => {
-        console.log({ role });
+        if (role === 'User') {
+            listHistory();
+        }
 
     }, [role])
+
+    const renderUserButton = (concert_uuid: string) => {
+        const consert_his = history.find(item => item.concert_uuid === concert_uuid);
+        console.log({ consert_his });
+        if (consert_his) {
+            if (consert_his.action === 'Reserve') {
+                return (
+                    <Button
+                        size={'large'}
+                        variant={'contained'}
+                        color={'error'}
+                        onClick={() => handleCancel(concert_uuid)}
+                    >Cancel</Button>
+                )
+            }
+        }
+        return (
+            <Button
+                size={'large'}
+                variant={'contained'}
+                color={'primary'}
+                onClick={() => handleReserve(concert_uuid)}
+            >Reserve</Button>
+        )
+    }
     const confirmDeleteAction = (isConfirm: boolean) => {
         console.log({ isConfirm, delete: uuid });
         setOpen(false)
@@ -47,8 +79,7 @@ export default function Overview() {
     }
 
     const handleCancel = (uuid: string) => {
-                console.log('handleCancel: ', uuid);
-
+        console.log('handleCancel: ', uuid);
     }
     return (
         <>
@@ -93,22 +124,11 @@ export default function Overview() {
                                                     color={'error'}
                                                     onClick={() => handleDelete(item.name, item.uuid)}
                                                 >Delete</Button>
-                                            </> : <>
-                                                <Button
-                                                    size={'large'}
-                                                    variant={'contained'}
-                                                    color={'primary'}
-                                                    onClick={() => handleReserve(item.uuid)}
-                                                >Reserve</Button>
-
-
-                                                <Button
-                                                    size={'large'}
-                                                    variant={'contained'}
-                                                    color={'error'}
-                                                    onClick={() => handleCancel(item.uuid)}
-                                                >Cancel</Button>
-                                            </>}
+                                            </> :
+                                                <Fragment>
+                                                    {renderUserButton(item.uuid)}
+                                                </Fragment>
+                                            }
                                         </Grid>
                                     </Grid>
                                 </CardContent>

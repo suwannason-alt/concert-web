@@ -31,3 +31,12 @@ export async function reserveConsert(uuid: string) {
         return Promise.reject(error)
     }
 }
+
+export async function getHistory() {
+    try {
+        const response = await authentication.get(`/api/v1/concert/history`);
+        return response.data;
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}

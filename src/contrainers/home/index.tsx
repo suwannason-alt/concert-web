@@ -38,7 +38,7 @@ export default function RootHome() {
 
                         <TabPanel value={'2'}>
                             <div>
-                                <CreateConcert />
+                                <CreateConcert handleChange={handleChange} />
                             </div>
                         </TabPanel>
                     </TabContext>
